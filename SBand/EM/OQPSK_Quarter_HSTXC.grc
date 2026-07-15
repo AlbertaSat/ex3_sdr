@@ -80,6 +80,73 @@ blocks:
     coordinate: [1776, 136.0]
     rotation: 0
     state: enabled
+- name: center_freq
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: center_freq
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-50000'
+    step: '50'
+    stop: '50000'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1544, 152.0]
+    rotation: 0
+    state: true
+- name: dec_cc
+  id: variable_cc_decoder_def
+  parameters:
+    comment: ''
+    dim1: '4'
+    dim2: '4'
+    framebits: '80'
+    k: '7'
+    mode: fec.CC_STREAMING
+    ndim: '0'
+    padding: 'False'
+    polys: '[79, 109]'
+    rate: '2'
+    state_end: '-1'
+    state_start: '0'
+    value: '"ok"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 524.0]
+    rotation: 0
+    state: disabled
+- name: dec_cc
+  id: variable_cc_decoder_def
+  parameters:
+    comment: ''
+    dim1: '1'
+    dim2: '1'
+    framebits: '2048'
+    k: '7'
+    mode: fec.CC_STREAMING
+    ndim: '0'
+    padding: 'False'
+    polys: '[83,113]'
+    rate: '2'
+    state_end: '-1'
+    state_start: '0'
+    value: '"ok"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 756.0]
+    rotation: 0
+    state: enabled
 - name: dec_rec
   id: variable
   parameters:
@@ -94,6 +161,18 @@ blocks:
     coordinate: [2208, 472.0]
     rotation: 0
     state: enabled
+- name: freq
+  id: variable
+  parameters:
+    comment: ''
+    value: '2200000000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [256, 80.0]
+    rotation: 0
+    state: true
 - name: frequency
   id: variable_qtgui_range
   parameters:
@@ -107,7 +186,7 @@ blocks:
     step: '100000'
     stop: '2300000000'
     value: '2200000000'
-    widget: eng_slider
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
@@ -128,12 +207,24 @@ blocks:
     step: '1'
     stop: '60'
     value: '40'
-    widget: eng_slider
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1912, 304.0]
+    rotation: 0
+    state: enabled
+- name: nfilts
+  id: variable
+  parameters:
+    comment: ''
+    value: '32'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [592, 8.0]
     rotation: 0
     state: enabled
 - name: null_path
@@ -145,7 +236,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 8.0]
+    coordinate: [504, 8.0]
     rotation: 0
     state: enabled
 - name: platform
@@ -157,9 +248,29 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416, 8.0]
+    coordinate: [432, 8.0]
     rotation: 0
     state: enabled
+- name: qpsk_const
+  id: variable_constellation_rect
+  parameters:
+    comment: ''
+    const_points: '[-0.707-0.707j, -0.707+0.707j, 0.707-0.707j, 0.707+0.707j]'
+    imag_sect: '2'
+    precision: '8'
+    real_sect: '2'
+    rot_sym: '4'
+    soft_dec_lut: None
+    sym_map: '[0, 1, 2, 3]'
+    w_imag_sect: '1'
+    w_real_sect: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 348.0]
+    rotation: 0
+    state: true
 - name: qt_dec_rec_toggle
   id: variable_qtgui_check_box
   parameters:
@@ -212,7 +323,6 @@ blocks:
   id: variable_qtgui_entry
   parameters:
     comment: Comment to be included in the filename
-    entry_signal: editingFinished
     gui_hint: settings@1:1,0,1,1
     label: '"Recording Note"'
     type: string
@@ -253,7 +363,6 @@ blocks:
     comment: 'GUI entry for recording storage location
 
       Defaults to ./rec/'
-    entry_signal: editingFinished
     gui_hint: settings@1:0,0,1,1
     label: '"Recording Location"'
     type: string
@@ -265,11 +374,35 @@ blocks:
     coordinate: [2048, 112.0]
     rotation: 0
     state: enabled
+- name: rrc_taps
+  id: variable
+  parameters:
+    comment: ''
+    value: firdes.root_raised_cosine(nfilts,nfilts,1/float(4),0.35,11*4*nfilts)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 8.0]
+    rotation: 0
+    state: enabled
+- name: samp_per_sym
+  id: variable
+  parameters:
+    comment: ''
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [808, 8.0]
+    rotation: 0
+    state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: '32000'
+    value: '4000000'
   states:
     bus_sink: false
     bus_source: false
@@ -289,80 +422,40 @@ blocks:
     coordinate: [280, 8.0]
     rotation: 0
     state: enabled
-- name: analog_noise_source_x_0
-  id: analog_noise_source_x
+- name: blocks_char_to_float_0
+  id: blocks_char_to_float
   parameters:
     affinity: ''
     alias: ''
-    amp: '1'
-    comment: Temporary data source for GUI development
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    noise_type: analog.GR_GAUSSIAN
-    seed: '0'
-    type: float
+    scale: '1'
+    vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 304.0]
-    rotation: 0
+    coordinate: [296, 504.0]
+    rotation: 180
     state: enabled
-- name: analog_noise_source_x_1
-  id: analog_noise_source_x
+- name: blocks_char_to_float_1
+  id: blocks_char_to_float
   parameters:
     affinity: ''
     alias: ''
-    amp: '1'
-    comment: Temporary data source for GUI development
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    noise_type: analog.GR_GAUSSIAN
-    seed: '0'
-    type: complex
+    scale: '1'
+    vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 416.0]
+    coordinate: [984, 592.0]
     rotation: 0
-    state: enabled
-- name: analog_phase_modulator_fc_0
-  id: analog_phase_modulator_fc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: Temporary data source for GUI development
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sensitivity: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [200, 320.0]
-    rotation: 0
-    state: enabled
-- name: analog_random_source_x_0
-  id: analog_random_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: Temporary data source for GUI development
-    max: '2'
-    maxoutbuf: '0'
-    min: '0'
-    minoutbuf: '0'
-    num_samps: '1000'
-    repeat: 'True'
-    type: byte
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 520.0]
-    rotation: 0
-    state: enabled
+    state: true
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -386,9 +479,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 464.0]
+    coordinate: [1280, 536.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_0_0
   id: blocks_file_sink
   parameters:
@@ -412,7 +505,224 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 616.0]
+    coordinate: [1280, 696.0]
+    rotation: 0
+    state: disabled
+- name: blocks_file_sink_1
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /home/sam/absat/ex3_sdr/SBand/EM/outputtest.txt
+    type: byte
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1184, 800.0]
+    rotation: 0
+    state: true
+- name: blocks_file_source_0
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: /home/sam/Downloads/hstxc_2mbit_oqpsk_noscram_testmode_4msamp.bin
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'True'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [104, 168.0]
+    rotation: 0
+    state: true
+- name: blocks_pack_k_bits_bb_0
+  id: blocks_pack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1000, 696.0]
+    rotation: 0
+    state: true
+- name: blocks_throttle_0
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 200.0]
+    rotation: 0
+    state: enabled
+- name: blocks_unpack_k_bits_bb_0
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [584, 504.0]
+    rotation: 180
+    state: enabled
+- name: digital_constellation_decoder_cb_0
+  id: digital_constellation_decoder_cb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    constellation: qpsk_const
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [888, 504.0]
+    rotation: 180
+    state: enabled
+- name: digital_costas_loop_cc_1
+  id: digital_costas_loop_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    order: '4'
+    use_snr: 'False'
+    w: '0.01'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 176.0]
+    rotation: 0
+    state: enabled
+- name: digital_diff_decoder_bb_0
+  id: digital_diff_decoder_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    coding: digital.DIFF_DIFFERENTIAL
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    modulus: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [568, 584.0]
+    rotation: 0
+    state: true
+- name: digital_map_bb_0
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[0, 1, 2, 3]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 504.0]
+    rotation: 180
+    state: enabled
+- name: digital_map_bb_1
+  id: digital_map_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    map: '[-1, 1]'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 504.0]
+    rotation: 180
+    state: enabled
+- name: digital_pfb_clock_sync_xxx_0_0
+  id: digital_pfb_clock_sync_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    filter_size: nfilts
+    init_phase: '0'
+    loop_bw: '0.001'
+    max_dev: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    osps: '1'
+    sps: samp_per_sym
+    taps: rrc_taps
+    type: ccf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 204.0]
+    rotation: 0
+    state: enabled
+- name: fec_extended_decoder_0_0_1
+  id: fec_extended_decoder
+  parameters:
+    affinity: ''
+    alias: ''
+    ann: None
+    comment: ''
+    decoder_list: dec_cc
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    puncpat: '''11'''
+    threadtype: none
+    value: fec_extended_decoder
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 568.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -454,6 +764,19 @@ blocks:
     coordinate: [8, 232.0]
     rotation: 0
     state: enabled
+- name: import_1_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from pathlib import Path
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 280.0]
+    rotation: 0
+    state: enabled
 - name: import_1_1
   id: import
   parameters:
@@ -482,21 +805,21 @@ blocks:
     alpha7: '1.0'
     alpha8: '1.0'
     alpha9: '1.0'
-    autoscale: 'False'
+    autoscale: 'True'
     axislabels: 'True'
     color1: '"blue"'
-    color10: '"dark blue"'
+    color10: '"red"'
     color2: '"red"'
-    color3: '"green"'
-    color4: '"black"'
-    color5: '"cyan"'
-    color6: '"magenta"'
-    color7: '"yellow"'
-    color8: '"dark red"'
-    color9: '"dark green"'
-    comment: Primary phase domain visualization
-    grid: 'True'
-    gui_hint: 0,1,5,5
+    color3: '"red"'
+    color4: '"red"'
+    color5: '"red"'
+    color6: '"red"'
+    color7: '"red"'
+    color8: '"red"'
+    color9: '"red"'
+    comment: ''
+    grid: 'False'
+    gui_hint: ''
     label1: ''
     label10: ''
     label2: ''
@@ -507,7 +830,7 @@ blocks:
     label7: ''
     label8: ''
     label9: ''
-    legend: 'False'
+    legend: 'True'
     marker1: '0'
     marker10: '0'
     marker2: '0'
@@ -518,7 +841,7 @@ blocks:
     marker7: '0'
     marker8: '0'
     marker9: '0'
-    name: '"Constellation"'
+    name: '""'
     nconnections: '1'
     size: '1024'
     style1: '0'
@@ -556,9 +879,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 360.0]
+    coordinate: [1296, 168.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -637,7 +960,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 240.0]
+    coordinate: [1280, 400.0]
     rotation: 0
     state: enabled
 - name: qtgui_ledindicator_0
@@ -662,6 +985,69 @@ blocks:
     coordinate: [1256, 40.0]
     rotation: 0
     state: enabled
+- name: qtgui_number_sink_0
+  id: qtgui_number_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    autoscale: 'False'
+    avg: '0'
+    color1: ("black", "black")
+    color10: ("black", "black")
+    color2: ("black", "black")
+    color3: ("black", "black")
+    color4: ("black", "black")
+    color5: ("black", "black")
+    color6: ("black", "black")
+    color7: ("black", "black")
+    color8: ("black", "black")
+    color9: ("black", "black")
+    comment: ''
+    factor1: '1'
+    factor10: '1'
+    factor2: '1'
+    factor3: '1'
+    factor4: '1'
+    factor5: '1'
+    factor6: '1'
+    factor7: '1'
+    factor8: '1'
+    factor9: '1'
+    graph_type: qtgui.NUM_GRAPH_HORIZ
+    gui_hint: 5,1,5,10
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    max: '1'
+    min: '-1'
+    name: '""'
+    nconnections: '1'
+    type: float
+    unit1: ''
+    unit10: ''
+    unit2: ''
+    unit3: ''
+    unit4: ''
+    unit5: ''
+    unit6: ''
+    unit7: ''
+    unit8: ''
+    unit9: ''
+    update_time: '0.10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1144, 568.0]
+    rotation: 0
+    state: true
 - name: qtgui_waterfall_sink_x_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -713,14 +1099,46 @@ blocks:
     name: Waterfall
     nconnections: '1'
     showports: 'False'
-    type: complex
+    type: float
     update_time: '0.10'
     wintype: window.WIN_BLACKMAN_hARRIS
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 120.0]
+    coordinate: [1280, 264.0]
+    rotation: 0
+    state: disabled
+- name: satellites_descrambler308_0
+  id: satellites_descrambler308
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [784, 600.0]
+    rotation: 0
+    state: true
+- name: satellites_rms_agc_0_0
+  id: satellites_rms_agc
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: 1e-2
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    reference: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [488, 192.0]
     rotation: 0
     state: enabled
 - name: settings
@@ -1190,19 +1608,32 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 352.0]
+    coordinate: [1912, 400.0]
     rotation: 0
     state: disabled
 
 connections:
-- [analog_noise_source_x_0, '0', analog_phase_modulator_fc_0, '0']
-- [analog_noise_source_x_1, '0', blocks_file_sink_0, '0']
-- [analog_phase_modulator_fc_0, '0', qtgui_const_sink_x_0, '0']
-- [analog_phase_modulator_fc_0, '0', qtgui_freq_sink_x_0, '0']
-- [analog_phase_modulator_fc_0, '0', qtgui_waterfall_sink_x_0, '0']
-- [analog_random_source_x_0, '0', blocks_file_sink_0_0, '0']
+- [blocks_char_to_float_0, '0', fec_extended_decoder_0_0_1, '0']
+- [blocks_char_to_float_1, '0', qtgui_number_sink_0, '0']
+- [blocks_char_to_float_1, '0', qtgui_waterfall_sink_x_0, '0']
+- [blocks_file_source_0, '0', blocks_throttle_0, '0']
+- [blocks_pack_k_bits_bb_0, '0', blocks_file_sink_1, '0']
+- [blocks_throttle_0, '0', satellites_rms_agc_0_0, '0']
+- [blocks_unpack_k_bits_bb_0, '0', digital_map_bb_1, '0']
+- [digital_constellation_decoder_cb_0, '0', digital_map_bb_0, '0']
+- [digital_costas_loop_cc_1, '0', digital_pfb_clock_sync_xxx_0_0, '0']
+- [digital_diff_decoder_bb_0, '0', satellites_descrambler308_0, '0']
+- [digital_map_bb_0, '0', blocks_unpack_k_bits_bb_0, '0']
+- [digital_map_bb_1, '0', blocks_char_to_float_0, '0']
+- [digital_pfb_clock_sync_xxx_0_0, '0', digital_constellation_decoder_cb_0, '0']
+- [digital_pfb_clock_sync_xxx_0_0, '0', qtgui_const_sink_x_0, '0']
+- [digital_pfb_clock_sync_xxx_0_0, '0', qtgui_freq_sink_x_0, '0']
+- [fec_extended_decoder_0_0_1, '0', digital_diff_decoder_bb_0, '0']
 - [record_toggle, state, qtgui_ledindicator_0, state]
+- [satellites_descrambler308_0, '0', blocks_char_to_float_1, '0']
+- [satellites_descrambler308_0, '0', blocks_pack_k_bits_bb_0, '0']
+- [satellites_rms_agc_0_0, '0', digital_costas_loop_cc_1, '0']
 
 metadata:
   file_format: 1
-  grc_version: 3.10.12.0
+  grc_version: 3.9.8.0
