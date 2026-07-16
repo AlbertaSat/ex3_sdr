@@ -158,7 +158,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2208, 472.0]
+    coordinate: [2224, 468.0]
     rotation: 0
     state: enabled
 - name: freq
@@ -213,6 +213,27 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1912, 304.0]
+    rotation: 0
+    state: enabled
+- name: loop_bw
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: loop_bw
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0.0005'
+    step: '0.0005'
+    stop: '1'
+    value: '0.01'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1560, 468.0]
     rotation: 0
     state: enabled
 - name: nfilts
@@ -323,6 +344,7 @@ blocks:
   id: variable_qtgui_entry
   parameters:
     comment: Comment to be included in the filename
+    entry_signal: editingFinished
     gui_hint: settings@1:1,0,1,1
     label: '"Recording Note"'
     type: string
@@ -363,6 +385,7 @@ blocks:
     comment: 'GUI entry for recording storage location
 
       Defaults to ./rec/'
+    entry_signal: editingFinished
     gui_hint: settings@1:0,0,1,1
     label: '"Recording Location"'
     type: string
@@ -402,7 +425,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '4000000'
+    value: '40000000'
   states:
     bus_sink: false
     bus_source: false
@@ -420,6 +443,35 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [280, 8.0]
+    rotation: 0
+    state: enabled
+- name: transition_bw
+  id: variable
+  parameters:
+    comment: ''
+    value: '2000000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 100.0]
+    rotation: 0
+    state: true
+- name: audio_sink_0
+  id: audio_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    device_name: plughw:0,0
+    num_inputs: '1'
+    ok_to_block: 'True'
+    samp_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1504, 348.0]
     rotation: 0
     state: enabled
 - name: blocks_char_to_float_0
@@ -456,6 +508,22 @@ blocks:
     coordinate: [984, 592.0]
     rotation: 0
     state: true
+- name: blocks_complex_to_float_0
+  id: blocks_complex_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 400.0]
+    rotation: 0
+    state: enabled
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -515,7 +583,7 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/sam/absat/ex3_sdr/SBand/EM/outputtest.txt
+    file: /home/albertasat/ex3_sdr/ex3_sdr/SBand/EM/test.txt
     type: byte
     unbuffered: 'False'
     vlen: '1'
@@ -525,7 +593,7 @@ blocks:
     bus_structure: null
     coordinate: [1184, 800.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -545,9 +613,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [104, 168.0]
+    coordinate: [616, 372.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_pack_k_bits_bb_0
   id: blocks_pack_k_bits_bb
   parameters:
@@ -562,25 +630,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1000, 696.0]
-    rotation: 0
-    state: true
-- name: blocks_throttle_0
-  id: blocks_throttle
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [328, 200.0]
     rotation: 0
     state: enabled
 - name: blocks_unpack_k_bits_bb_0
@@ -690,7 +739,7 @@ blocks:
     comment: ''
     filter_size: nfilts
     init_phase: '0'
-    loop_bw: '0.001'
+    loop_bw: '0.01'
     max_dev: '0.1'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -702,7 +751,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 204.0]
+    coordinate: [928, 204.0]
     rotation: 0
     state: enabled
 - name: fec_extended_decoder_0_0_1
@@ -723,6 +772,26 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [344, 568.0]
+    rotation: 0
+    state: enabled
+- name: freq_xlating_fir_filter_xxx_0
+  id: freq_xlating_fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    center_freq: freq
+    comment: ''
+    decim: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    taps: firdes.complex_band_pass(1.0, samp_rate, -6000000, 6000000, transition_bw)
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [408, 100.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -960,7 +1029,88 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1280, 400.0]
+    coordinate: [1280, 420.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_freq_sink_x_0_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: samp_rate * 2
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: Primary frequency domain visualization
+    ctrlpanel: 'False'
+    fc: frequency
+    fftsize: '1024'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: Frequency
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [128, 156.0]
     rotation: 0
     state: enabled
 - name: qtgui_ledindicator_0
@@ -1138,9 +1288,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 192.0]
+    coordinate: [496, 292.0]
     rotation: 0
-    state: enabled
+    state: bypassed
 - name: settings
   id: qtgui_tab_widget
   parameters:
@@ -1212,7 +1362,7 @@ blocks:
     ant7: '"RX2"'
     ant8: '"RX2"'
     ant9: '"RX2"'
-    bw0: '0'
+    bw0: '40000000'
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -1351,7 +1501,7 @@ blocks:
     dc_offs_enb8: default
     dc_offs_enb9: default
     dev_addr: '""'
-    dev_args: ''
+    dev_args: type=b200
     gain0: gain
     gain1: '0'
     gain10: '0'
@@ -1594,7 +1744,7 @@ blocks:
     start_time: '-1.0'
     stream_args: ''
     stream_chans: '[]'
-    sync: sync
+    sync: pc_clock
     time_source0: ''
     time_source1: ''
     time_source2: ''
@@ -1608,17 +1758,16 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1912, 400.0]
+    coordinate: [248, 324.0]
     rotation: 0
-    state: disabled
+    state: enabled
 
 connections:
 - [blocks_char_to_float_0, '0', fec_extended_decoder_0_0_1, '0']
 - [blocks_char_to_float_1, '0', qtgui_number_sink_0, '0']
 - [blocks_char_to_float_1, '0', qtgui_waterfall_sink_x_0, '0']
-- [blocks_file_source_0, '0', blocks_throttle_0, '0']
+- [blocks_complex_to_float_0, '0', audio_sink_0, '0']
 - [blocks_pack_k_bits_bb_0, '0', blocks_file_sink_1, '0']
-- [blocks_throttle_0, '0', satellites_rms_agc_0_0, '0']
 - [blocks_unpack_k_bits_bb_0, '0', digital_map_bb_1, '0']
 - [digital_constellation_decoder_cb_0, '0', digital_map_bb_0, '0']
 - [digital_costas_loop_cc_1, '0', digital_pfb_clock_sync_xxx_0_0, '0']
@@ -1629,11 +1778,15 @@ connections:
 - [digital_pfb_clock_sync_xxx_0_0, '0', qtgui_const_sink_x_0, '0']
 - [digital_pfb_clock_sync_xxx_0_0, '0', qtgui_freq_sink_x_0, '0']
 - [fec_extended_decoder_0_0_1, '0', digital_diff_decoder_bb_0, '0']
+- [freq_xlating_fir_filter_xxx_0, '0', digital_costas_loop_cc_1, '0']
 - [record_toggle, state, qtgui_ledindicator_0, state]
 - [satellites_descrambler308_0, '0', blocks_char_to_float_1, '0']
 - [satellites_descrambler308_0, '0', blocks_pack_k_bits_bb_0, '0']
-- [satellites_rms_agc_0_0, '0', digital_costas_loop_cc_1, '0']
+- [uhd_usrp_source_0, '0', blocks_complex_to_float_0, '0']
+- [uhd_usrp_source_0, '0', freq_xlating_fir_filter_xxx_0, '0']
+- [uhd_usrp_source_0, '0', qtgui_freq_sink_x_0_0, '0']
+- [uhd_usrp_source_0, '0', satellites_rms_agc_0_0, '0']
 
 metadata:
   file_format: 1
-  grc_version: 3.9.8.0
+  grc_version: 3.10.12.0
